@@ -1,0 +1,253 @@
+{
+  "updatedAt": "2026-11-05T13:23:37+00:00",
+  "company": "Kyaani GMBH",
+  "profiles": [
+    {
+      "name": "office-alex",
+      "agentId": "alex",
+      "displayName": "Alex",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-customer-support",
+          "sectionName": "CUSTOMER SUPPORT",
+          "officePlanId": "alex"
+        }
+      }
+    },
+    {
+      "name": "office-noah",
+      "agentId": "noah",
+      "displayName": "Noah",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-customer-support",
+          "sectionName": "CUSTOMER SUPPORT",
+          "officePlanId": "noah"
+        }
+      }
+    },
+    {
+      "name": "office-david",
+      "agentId": "david",
+      "displayName": "David",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-engineering",
+          "sectionName": "ENGINEERING",
+          "officePlanId": "david"
+        }
+      }
+    },
+    {
+      "name": "office-jack",
+      "agentId": "jack",
+      "displayName": "Jack",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-engineering",
+          "sectionName": "ENGINEERING",
+          "officePlanId": "jack"
+        }
+      }
+    },
+    {
+      "name": "office-nora",
+      "agentId": "nora",
+      "displayName": "Nora",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-engineering",
+          "sectionName": "ENGINEERING",
+          "officePlanId": "nora"
+        }
+      }
+    },
+    {
+      "name": "office-priya",
+      "agentId": "priya",
+      "displayName": "Priya",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-engineering",
+          "sectionName": "ENGINEERING",
+          "officePlanId": "priya"
+        }
+      }
+    },
+    {
+      "name": "office-sam",
+      "agentId": "sam",
+      "displayName": "Sam",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-engineering",
+          "sectionName": "ENGINEERING",
+          "officePlanId": "sam"
+        }
+      }
+    },
+    {
+      "name": "office-zoe",
+      "agentId": "zoe",
+      "displayName": "Zoe",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-engineering",
+          "sectionName": "ENGINEERING",
+          "officePlanId": "zoe"
+        }
+      }
+    },
+    {
+      "name": "office-lily",
+      "agentId": "lily",
+      "displayName": "Lily",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-executive",
+          "sectionName": "EXECUTIVE",
+          "officePlanId": "lily"
+        }
+      }
+    },
+    {
+      "name": "office-owen",
+      "agentId": "owen",
+      "displayName": "Owen",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-executive",
+          "sectionName": "EXECUTIVE",
+          "officePlanId": "owen"
+        }
+      }
+    },
+    {
+      "name": "office-sarah",
+      "agentId": "sarah",
+      "displayName": "Sarah",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-executive",
+          "sectionName": "EXECUTIVE",
+          "officePlanId": "sarah"
+        }
+      }
+    },
+    {
+      "name": "office-elena",
+      "agentId": "elena",
+      "displayName": "Elena",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-finance",
+          "sectionName": "FINANCE",
+          "officePlanId": "elena"
+        }
+      }
+    },
+    {
+      "name": "office-marco",
+      "agentId": "marco",
+      "displayName": "Marco",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-human-resources",
+          "sectionName": "HUMAN RESOURCES",
+          "officePlanId": "marco"
+        }
+      }
+    },
+    {
+      "name": "office-ben",
+      "agentId": "ben",
+      "displayName": "Ben",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-knowledge",
+          "sectionName": "KNOWLEDGE",
+          "officePlanId": "ben"
+        }
+      }
+    },
+    {
+      "name": "office-hana",
+      "agentId": "hana",
+      "displayName": "Hana",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-legal",
+          "sectionName": "LEGAL & COMPLIANCE",
+          "officePlanId": "hana"
+        }
+      }
+    },
+    {
+      "name": "office-riku",
+      "agentId": "riku",
+      "displayName": "Riku",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-legal",
+          "sectionName": "LEGAL & COMPLIANCE",
+          "officePlanId": "riku"
+        }
+      }
+    },
+    {
+      "name": "office-grace",
+      "agentId": "grace",
+      "displayName": "Grace",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-marketing",
+          "sectionName": "MARKETING",
+          "officePlanId": "grace"
+        }
+      }
+    },
+    {
+      "name": "office-sofia",
+      "agentId": "sofia",
+      "displayName": "Sofia",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-marketing",
+          "sectionName": "MARKETING",
+          "officePlanId": "sofia"
+        }
+      }
+    },
+    {
+      "name": "office-mira",
+      "agentId": "mira",
+      "displayName": "Mira",
+      "model": "openai/vllm/company-ai-local",
+      "ui_meta": {
+        "hermes-bots": {
+          "sectionId": "office-dept-product",
+          "sectionName": "PRODUCT",
+          "officePlanId": "mira"
+        }
+      }
+    }
+  ]
+}

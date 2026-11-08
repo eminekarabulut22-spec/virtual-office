@@ -1,0 +1,31 @@
+{
+  "name": "@kyaani/virtual-office",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "server": "cd server && python3 office_server.py",
+    "start": "npm run build && cd server && KYAANI_OFFICE_PORT=3001 python3 office_server.py",
+    "dev": "concurrently -k \"KYAANI_OFFICE_PORT=3002 npm run server\" \"npm run dev:vite\"",
+    "dev:vite": "vite",
+    "bots-proxy": "tsx scripts/kyaani-gateway-bots-proxy.ts"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.172.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.2",
+    "tsx": "^4.19.2",
+    "vite": "^6.0.3",
+    "ws": "^8.18.0",
+    "@types/ws": "^8.5.13"
+  }
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="kyaani-office-origin" content="http://127.0.0.1:3001" />
+    <meta name="kyaani-office-build" content="kyaani-ai-infra-doc" />
+    <title>Kyaani Virtual Office</title>
+    <script>
+      (function () {
+        try {
+          if (/(?:^|[?&])embed=hermes(?:&|$)/.test(location.search) || window.self !== window.top) {
+            document.documentElement.dataset.embed = 'hermes'
+            document.documentElement.style.height = '100%'
+            document.body && (document.body.style.height = '100%')
+          }
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

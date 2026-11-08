@@ -1,0 +1,135 @@
+.vo-scene-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  background: #52525c;
+  overflow: hidden;
+}
+
+.co-scene-root {
+  position: absolute;
+  inset: 0;
+}
+
+.co-scene-root--agenten {
+  background: #52525c;
+}
+
+.co-canvas {
+  display: block;
+  height: 100%;
+  width: 100%;
+  touch-action: none;
+}
+
+.co-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.co-labels--agenten .co-dept-plate,
+.co-labels--agenten .co-agent-tag {
+  pointer-events: auto;
+}
+
+.co-dept-plate {
+  pointer-events: auto;
+  width: max-content;
+  max-width: calc(var(--co-plate-span, 11) * 10px);
+  padding: 3px 6px 4px;
+  transform-origin: center center;
+  border-radius: 5px;
+  border: 1px solid rgb(255 255 255 / 22%);
+  background: rgb(10 12 16 / 88%);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 14px rgb(0 0 0 / 45%);
+  text-align: left;
+  cursor: pointer;
+}
+
+.co-dept-plate-name {
+  display: block;
+  font-size: clamp(6px, calc(var(--co-plate-span, 11) * 0.52px), 8px);
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.2;
+}
+
+.co-dept-plate-status {
+  display: flex;
+  height: 4px;
+  margin-top: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  gap: 1px;
+  background: rgb(0 0 0 / 35%);
+}
+
+.co-dept-plate-status i {
+  display: block;
+  min-width: 3px;
+  height: 100%;
+}
+
+.co-dept-plate-status i[data-status='working'] {
+  background: #3dbe7a;
+}
+.co-dept-plate-status i[data-status='waiting'] {
+  background: #e6b15a;
+}
+.co-dept-plate-status i[data-status='problem'] {
+  background: #e25b56;
+}
+.co-dept-plate-status i[data-status='idle'] {
+  background: #8aa0b2;
+}
+.co-dept-plate-status i[data-status='offline'] {
+  background: #5c6b76;
+}
+
+.co-dept-plate--on {
+  border-color: var(--co-dept-accent, #e6a85a);
+}
+
+.co-dept-plate--dim {
+  opacity: 0.55;
+}
+
+.co-brain-hero-3d {
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  line-height: 0;
+}
+
+.co-brain-hero-3d img,
+.co-brain-hero-3d__img {
+  width: clamp(64px, 11vw, 118px);
+  max-height: 92px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 24px rgb(255 90 40 / 55%));
+  animation: vo-brain-glow 2.8s ease-in-out infinite;
+}
+
+@keyframes vo-brain-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 8px 22px rgb(255 90 40 / 45%));
+  }
+  50% {
+    filter: drop-shadow(0 12px 36px rgb(255 140 80 / 75%));
+  }
+}
+
+.co-agent-tag {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #1a1e24;
+  background: rgb(255 255 255 / 94%);
+  cursor: pointer;
+  white-space: nowrap;
+}

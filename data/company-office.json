@@ -1,0 +1,218 @@
+{
+  "company": "Kyaani GMBH",
+  "departments": [
+    {
+      "id": "customer-support",
+      "name": "Customer Support",
+      "agents": [
+        {
+          "id": "alex",
+          "name": "Alex",
+          "role": "Customer Support Agent",
+          "status": "idle",
+          "doing": "Idle",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "noah",
+          "name": "Noah",
+          "role": "Support Team Lead",
+          "status": "idle",
+          "doing": "Triage escalations from Alex.",
+          "model": "openai/vllm/company-ai-local"
+        }
+      ]
+    },
+    {
+      "id": "engineering",
+      "name": "Engineering",
+      "agents": [
+        {
+          "id": "david",
+          "name": "David",
+          "role": "Platform Engineer",
+          "status": "working",
+          "doing": "Working",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "jack",
+          "name": "Jack",
+          "role": "Backend Engineer",
+          "status": "idle",
+          "doing": "Idle",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "nora",
+          "name": "Nora",
+          "role": "SRE",
+          "status": "waiting",
+          "doing": "Waiting",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "priya",
+          "name": "Priya",
+          "role": "Security Engineer",
+          "status": "working",
+          "doing": "Reviewing dependency alerts.",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "sam",
+          "name": "Sam",
+          "role": "Full-stack Engineer",
+          "status": "working",
+          "doing": "Working",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "zoe",
+          "name": "Zoe",
+          "role": "AI Infra Engineer",
+          "status": "working",
+          "doing": "Working",
+          "model": "openai/vllm/company-ai-local"
+        }
+      ]
+    },
+    {
+      "id": "executive",
+      "name": "Executive",
+      "agents": [
+        {
+          "id": "lily",
+          "name": "Lily",
+          "role": "Chief of Staff",
+          "status": "idle",
+          "doing": "Idle",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "owen",
+          "name": "Owen",
+          "role": "Operations Lead",
+          "status": "idle",
+          "doing": "Idle",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "sarah",
+          "name": "Sarah",
+          "role": "CEO",
+          "status": "working",
+          "doing": "Working",
+          "model": "openai/vllm/company-ai-local"
+        }
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "Finance",
+      "agents": [
+        {
+          "id": "elena",
+          "name": "Elena",
+          "role": "Finance Controller",
+          "status": "idle",
+          "doing": "Reconciling monthly books.",
+          "model": "openai/vllm/company-ai-local"
+        }
+      ]
+    },
+    {
+      "id": "human-resources",
+      "name": "Human Resources",
+      "agents": [
+        {
+          "id": "marco",
+          "name": "Marco",
+          "role": "HR Partner",
+          "status": "idle",
+          "doing": "Screening open role applications.",
+          "model": "openai/vllm/company-ai-local"
+        }
+      ]
+    },
+    {
+      "id": "knowledge",
+      "name": "Knowledge",
+      "agents": [
+        {
+          "id": "ben",
+          "name": "Ben",
+          "role": "Company Knowledge Agent",
+          "status": "working",
+          "doing": "Working",
+          "model": "openai/vllm/company-ai-local"
+        }
+      ]
+    },
+    {
+      "id": "legal",
+      "name": "Legal & Compliance",
+      "agents": [
+        {
+          "id": "hana",
+          "name": "Hana",
+          "role": "Legal Counsel",
+          "status": "waiting",
+          "doing": "Waiting",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "riku",
+          "name": "Riku",
+          "role": "Compliance Analyst",
+          "status": "idle",
+          "doing": "Idle",
+          "model": "openai/vllm/company-ai-local"
+        }
+      ]
+    },
+    {
+      "id": "marketing",
+      "name": "Marketing",
+      "agents": [
+        {
+          "id": "grace",
+          "name": "Grace",
+          "role": "Marketing Planner",
+          "status": "idle",
+          "doing": "Idle",
+          "model": "openai/vllm/company-ai-local"
+        },
+        {
+          "id": "sofia",
+          "name": "Sofia",
+          "role": "Content Strategist",
+          "status": "working",
+          "doing": "Drafting product launch blog posts.",
+          "model": "openai/vllm/company-ai-local"
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "name": "Product",
+      "agents": [
+        {
+          "id": "mira",
+          "name": "Mira",
+          "role": "Product Manager",
+          "status": "working",
+          "doing": "Working",
+          "model": "openai/vllm/company-ai-local"
+        }
+      ]
+    },
+    {
+      "id": "sales",
+      "name": "Sales",
+      "agents": []
+    }
+  ],
+  "updatedAt": "2026-11-05T13:23:37+00:00",
+  "note": "Merged five new agents."
+}

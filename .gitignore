@@ -1,0 +1,4 @@
+node_modules/
+data/office-update-jobs.json
+data/agent-metrics.json
+data/*.tmp
