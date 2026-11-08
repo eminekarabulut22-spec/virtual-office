@@ -30,7 +30,7 @@ export function useAgentDeepLink(onAgent: (id: string) => void) {
     apply()
     const onMessage = (ev: MessageEvent) => {
       const data = ev.data as { type?: string; id?: string } | null
-      if (data?.type === 'kyaani-office-focus-agent' && data.id) {
+      if (data?.type === 'office-focus-agent' && data.id) {
         onAgent(String(data.id).trim())
       }
     }

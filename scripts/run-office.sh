@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-PORT="${KYAANI_OFFICE_PORT:-3001}"
-BOTS_PROXY_PORT="${KYAANI_GATEWAY_FRONT_PORT:-9122}"
-GATEWAY_UPSTREAM="${KYAANI_GATEWAY_UPSTREAM:-http://127.0.0.1:9123}"
+PORT="${OFFICE_PORT:-3001}"
+BOTS_PROXY_PORT="${GATEWAY_FRONT_PORT:-9122}"
+GATEWAY_UPSTREAM="${GATEWAY_UPSTREAM:-http://127.0.0.1:9123}"
 PLAN_JSON="$ROOT/data/company-office.json"
 BOTS_PROXY_PID=""
 
@@ -33,12 +33,12 @@ stop_bots_proxy() {
 }
 
 start_bots_proxy() {
-  [[ -f "$ROOT/scripts/kyaani-gateway-bots-proxy.ts" ]] || return 0
+  [[ -f "$ROOT/scripts/gateway-bots-proxy.ts" ]] || return 0
   (cd "$ROOT" && npm install --no-audit --no-fund >/dev/null 2>&1 || true)
-  KYAANI_GATEWAY_FRONT_PORT="$BOTS_PROXY_PORT" \
-    KYAANI_GATEWAY_UPSTREAM="$GATEWAY_UPSTREAM" \
-    KYAANI_OFFICE_URL="http://127.0.0.1:$PORT" \
-    KYAANI_COMPANY_OFFICE_JSON="$PLAN_JSON" \
+  GATEWAY_FRONT_PORT="$BOTS_PROXY_PORT" \
+    GATEWAY_UPSTREAM="$GATEWAY_UPSTREAM" \
+    OFFICE_BASE_URL="http://127.0.0.1:$PORT" \
+    COMPANY_OFFICE_JSON="$PLAN_JSON" \
     npm run bots-proxy --silent &
   BOTS_PROXY_PID=$!
 }
@@ -50,10 +50,10 @@ cd "$ROOT"
 npm run build
 start_bots_proxy
 cd server
-export KYAANI_OFFICE_PORT="$PORT"
-export KYAANI_LAB_HOST="${KYAANI_LAB_HOST:-company-devops}"
-export KYAANI_HERMES_REMOTE_HOME="${KYAANI_HERMES_REMOTE_HOME:-$HOME/.hermes}"
+export OFFICE_PORT="$PORT"
+export LAB_SSH_HOST="${LAB_SSH_HOST:-company-devops}"
+export HERMES_REMOTE_HOME="${HERMES_REMOTE_HOME:-$HOME/.hermes}"
 export HERMES_BIN="${HERMES_BIN:-$HOME/.local/bin/hermes}"
-export KYAANI_CHAT_URL="${KYAANI_CHAT_URL:-http://127.0.0.1:8790/v1/chat}"
+export PLAN_CHAT_URL="${PLAN_CHAT_URL:-http://127.0.0.1:8790/v1/chat}"
 echo "Virtual Office http://127.0.0.1:$PORT"
 exec python3 office_server.py

@@ -2,7 +2,7 @@
  * Local gateway front (127.0.0.1:9120) → SSH tunnel upstream (9123).
  * Merges company-office plan agents into profiles.list (WebSocket + GET /api/profiles).
  *
- * Until company-devops gateway ships _append_kyaani_company_office_profiles.
+ * Until company-devops gateway ships _append_company_office_profiles.
  */
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http'
 import { request as httpRequest } from 'node:http'
@@ -11,10 +11,10 @@ import { readFileSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import WebSocket, { WebSocketServer } from 'ws'
 
-const FRONT_PORT = Number(process.env.KYAANI_GATEWAY_FRONT_PORT ?? 9122)
-const UPSTREAM = (process.env.KYAANI_GATEWAY_UPSTREAM ?? 'http://127.0.0.1:9123').replace(/\/+$/, '')
-const OFFICE_URL = (process.env.KYAANI_OFFICE_URL ?? 'http://127.0.0.1:3001').replace(/\/+$/, '')
-const PLAN_JSON = process.env.KYAANI_COMPANY_OFFICE_JSON ?? ''
+const FRONT_PORT = Number(process.env.GATEWAY_FRONT_PORT ?? 9122)
+const UPSTREAM = (process.env.GATEWAY_UPSTREAM ?? 'http://127.0.0.1:9123').replace(/\/+$/, '')
+const OFFICE_URL = (process.env.OFFICE_BASE_URL ?? 'http://127.0.0.1:3001').replace(/\/+$/, '')
+const PLAN_JSON = process.env.COMPANY_OFFICE_JSON ?? ''
 
 type OfficeBot = {
   id: string
@@ -105,7 +105,7 @@ async function loadOfficeBots(): Promise<OfficeBot[]> {
   }
 
   try {
-    const res = await fetch(`${OFFICE_URL}/api/kyaani/office/bots`, { cache: 'no-store' })
+    const res = await fetch(`${OFFICE_URL}/api/office/bots`, { cache: 'no-store' })
     if (!res.ok) return cachedBots ?? []
     const body = (await res.json()) as { bots?: OfficeBot[] }
     cachedBots = sortOfficeBots(Array.isArray(body.bots) ? body.bots : [])
@@ -246,7 +246,7 @@ function normalizePlanProfileRows(profiles: ProfileRow[]): ProfileRow[] {
 
 /** Gateway/plan placeholders with no disk path — Desktop “Could not open … chat”. */
 function inferGatewayHermesHome(profiles: ProfileRow[]): string {
-  const fromEnv = (process.env.KYAANI_HERMES_REMOTE_HOME ?? process.env.HERMES_HOME ?? '').trim()
+  const fromEnv = (process.env.HERMES_REMOTE_HOME ?? process.env.HERMES_HOME ?? '').trim()
   if (fromEnv) return fromEnv.replace(/\/+$/, '')
   for (const row of profiles) {
     const p = String(row.path ?? '')
@@ -376,7 +376,7 @@ async function patchJsonText(text: string): Promise<string> {
       const before = msg.result.profiles.length
       msg.result.profiles = mergeProfiles(msg.result.profiles)
       if (msg.result.profiles.length > before) {
-        console.log(`[kyaani] profiles.list merged: ${before} → ${msg.result.profiles.length}`)
+        console.log(`[gateway-proxy] profiles.list merged: ${before} → ${msg.result.profiles.length}`)
       }
       return JSON.stringify(msg)
     }
@@ -425,12 +425,12 @@ function upstreamRequest(
           payload = Buffer.from(patched, 'utf8')
           const hdrs = { ...upRes.headers }
           delete hdrs['content-length']
-          hdrs['x-kyaani-bots-proxy'] = '1'
+          hdrs['x-gateway-bots-proxy'] = '1'
           res.writeHead(upRes.statusCode ?? 502, hdrs)
           res.end(payload)
           return
         }
-        const hdrs = { ...upRes.headers, 'x-kyaani-bots-proxy': '1' }
+        const hdrs = { ...upRes.headers, 'x-gateway-bots-proxy': '1' }
         delete hdrs['content-length']
         res.writeHead(upRes.statusCode ?? 502, hdrs)
         res.end(payload)
@@ -447,22 +447,22 @@ function upstreamRequest(
 
 const server = createServer((req, res) => {
   const pathOnly = (req.url ?? '/').split('?')[0] ?? '/'
-  if (pathOnly === '/kyaani-bots-proxy-health') {
+  if (pathOnly === '/gateway-bots-proxy-health') {
     res.writeHead(200, {
       'content-type': 'application/json',
-      'x-kyaani-bots-proxy': '1',
+      'x-gateway-bots-proxy': '1',
     })
     res.end(JSON.stringify({ ok: true, port: FRONT_PORT, upstream: UPSTREAM }))
     return
   }
-  if (pathOnly === '/kyaani-bots-proxy-refresh' && req.method === 'POST') {
+  if (pathOnly === '/gateway-bots-proxy-refresh' && req.method === 'POST') {
     invalidateOfficeBotsCache()
     void loadOfficeBots().then((bots) => {
-      console.log(`[kyaani] plan cache refreshed (${bots.length} office bots)`)
+      console.log(`[gateway-proxy] plan cache refreshed (${bots.length} office bots)`)
     })
     res.writeHead(200, {
       'content-type': 'application/json',
-      'x-kyaani-bots-proxy': '1',
+      'x-gateway-bots-proxy': '1',
     })
     res.end(JSON.stringify({ ok: true, bots: cachedBots?.length ?? 0 }))
     return
@@ -525,5 +525,5 @@ server.on('upgrade', (req, socket, head) => {
 })
 
 server.listen(FRONT_PORT, '127.0.0.1', () => {
-  console.log(`[kyaani] gateway bots proxy 127.0.0.1:${FRONT_PORT} → ${UPSTREAM} (office ${OFFICE_URL})`)
+  console.log(`[gateway-proxy] gateway bots proxy 127.0.0.1:${FRONT_PORT} → ${UPSTREAM} (office ${OFFICE_URL})`)
 })

@@ -1,7 +1,7 @@
 /** Same contract for every customer: office iframe asks Hermes Desktop to open Bot Chat. */
 
 export type OpenBotChatPayload = {
-  type: 'kyaani-office-open-bot-chat'
+  type: 'office-open-bot-chat'
   agentId: string
   profile: string
 }
@@ -12,14 +12,14 @@ export function officeProfileName(agentId: string): string {
 
 /** Opens the agent in Hermes BOTS → Bot Chat (parent must handle the message). */
 export type OfficePlanUpdatedMessage = {
-  type: 'kyaani:office-plan-updated'
+  type: 'office-plan-updated'
   updatedAt?: string
 }
 
 /** Tell Hermes Desktop plugin to refresh BOTS roster after Update. */
 export function notifyHermesPlanUpdated(updatedAt?: string): void {
   const payload: OfficePlanUpdatedMessage = {
-    type: 'kyaani:office-plan-updated',
+    type: 'office-plan-updated',
     updatedAt,
   }
   if (window.parent && window.parent !== window) {
@@ -29,7 +29,7 @@ export function notifyHermesPlanUpdated(updatedAt?: string): void {
 
 export function requestHermesBotChat(agentId: string): void {
   const payload: OpenBotChatPayload = {
-    type: 'kyaani-office-open-bot-chat',
+    type: 'office-open-bot-chat',
     agentId,
     profile: officeProfileName(agentId),
   }

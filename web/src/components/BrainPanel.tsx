@@ -33,7 +33,7 @@ export default function BrainPanel({ plan, selectedAgentId, onSelectAgent, onSel
           <strong>{lead.name}</strong> — {lead.role}
         </button>
       )}
-      <p className="vo-brain-note">[from company-office.json in Kyaani_AI_Infra_Doc]</p>
+      <p className="vo-brain-note">[from company-office.json in virtual-office]</p>
       <div className="vo-brain-stats">
         {(
           [

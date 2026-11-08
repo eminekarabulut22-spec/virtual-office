@@ -1,8 +1,8 @@
 """Read agent tokens / finished chats from Hermes profile state.db (same for every tenant install).
 
 Configure once per deployment:
-  KYAANI_HERMES_PROFILES_DIR  — directory containing `office-<agentId>/state.db`
-  (optional) KYAANI_LAB_HOST + KYAANI_HERMES_REMOTE_PROFILES for SSH read on lab gateway
+  HERMES_PROFILES_DIR  — directory containing `office-<agentId>/state.db`
+  (optional) LAB_SSH_HOST + HERMES_REMOTE_PROFILES for SSH read on lab gateway
 """
 
 from __future__ import annotations
@@ -18,11 +18,11 @@ from plan import office_profile_name
 
 
 def profiles_dir() -> Path | None:
-    remote = os.environ.get("KYAANI_HERMES_REMOTE_PROFILES", "").strip()
-    host = os.environ.get("KYAANI_LAB_HOST", "").strip()
+    remote = os.environ.get("HERMES_REMOTE_PROFILES", "").strip()
+    host = os.environ.get("LAB_SSH_HOST", "").strip()
     if host and remote:
         return None  # handled via SSH
-    raw = os.environ.get("KYAANI_HERMES_PROFILES_DIR", "").strip()
+    raw = os.environ.get("HERMES_PROFILES_DIR", "").strip()
     if raw:
         return Path(os.path.expanduser(raw))
     default = Path.home() / ".hermes" / "profiles"
@@ -126,8 +126,8 @@ def _ssh_run_python(host: str, script: str, *, timeout: int = 30) -> dict[str, A
 
 
 def _read_via_ssh(profile: str) -> dict[str, Any]:
-    host = os.environ.get("KYAANI_LAB_HOST", "").strip()
-    remote_root = os.environ.get("KYAANI_HERMES_REMOTE_PROFILES", "").strip()
+    host = os.environ.get("LAB_SSH_HOST", "").strip()
+    remote_root = os.environ.get("HERMES_REMOTE_PROFILES", "").strip()
     if not host or not remote_root:
         return {"found": False, "tokens": 0, "chat_sessions_finished": 0}
     db = f"{remote_root.rstrip('/')}/{profile}/state.db"
@@ -185,15 +185,15 @@ def _tokens_for_session_ids_db(db_path: Path, session_ids: list[str]) -> int:
 
 
 def _tokens_for_session_ids_remote(profile: str, session_ids: list[str]) -> int:
-    host = os.environ.get("KYAANI_LAB_HOST", "").strip()
+    host = os.environ.get("LAB_SSH_HOST", "").strip()
     if not host:
         return 0
     ids = [s.strip() for s in session_ids if s and s.strip()]
     if not ids:
         return 0
     remote_home = (
-        os.environ.get("KYAANI_HERMES_REMOTE_HOME", "").strip()
-        or os.environ.get("KYAANI_HERMES_REMOTE_PROFILES", "").strip()
+        os.environ.get("HERMES_REMOTE_HOME", "").strip()
+        or os.environ.get("HERMES_REMOTE_PROFILES", "").strip()
         or "~/.hermes"
     )
     db = f"{remote_home.rstrip('/')}/profiles/{profile}/state.db"
@@ -236,12 +236,12 @@ def tokens_for_session_ids(profile: str, session_ids: list[str]) -> int:
 
 def _read_remote_home_profile(profile: str) -> dict[str, Any]:
     """Gateway BOTS state on lab host (e.g. /home/emine/.hermes/profiles/office-sarah)."""
-    host = os.environ.get("KYAANI_LAB_HOST", "").strip()
+    host = os.environ.get("LAB_SSH_HOST", "").strip()
     if not host:
         return {"found": False, "tokens": 0, "chat_sessions_finished": 0}
     remote_home = (
-        os.environ.get("KYAANI_HERMES_REMOTE_HOME", "").strip()
-        or os.environ.get("KYAANI_HERMES_REMOTE_PROFILES", "").strip()
+        os.environ.get("HERMES_REMOTE_HOME", "").strip()
+        or os.environ.get("HERMES_REMOTE_PROFILES", "").strip()
     )
     if not remote_home:
         remote_home = "~/.hermes"
@@ -278,8 +278,8 @@ def _read_remote_home_profile(profile: str) -> dict[str, Any]:
 
 def profile_metrics(agent_id: str) -> dict[str, Any]:
     profile = office_profile_name(agent_id)
-    if os.environ.get("KYAANI_LAB_HOST", "").strip() and os.environ.get(
-        "KYAANI_HERMES_REMOTE_PROFILES", ""
+    if os.environ.get("LAB_SSH_HOST", "").strip() and os.environ.get(
+        "HERMES_REMOTE_PROFILES", ""
     ).strip():
         legacy = _read_via_ssh(profile)
         if legacy.get("found"):

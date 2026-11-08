@@ -151,7 +151,7 @@ export default function App() {
     }
     setNote(summary)
     notifyHermesPlanUpdated(next.updatedAt)
-    void fetch('/api/kyaani/office/ensure-profiles', { method: 'POST' })
+    void fetch('/api/office/ensure-profiles', { method: 'POST' })
     window.setTimeout(() => setNote(null), 12_000)
   }
 
@@ -168,7 +168,7 @@ export default function App() {
     <div className={`vo-app${embedded ? ' vo-app--hermes-embed' : ''}`}>
       {!embedded && (
         <p className="vo-build-badge" title="Source repo">
-          Kyaani AI Infra Doc · virtual-office
+          Virtual Office · virtual-office
         </p>
       )}
       <header className="vo-header">
@@ -179,7 +179,7 @@ export default function App() {
               ? embedded
                 ? `${plan.departments.length} departments · ${agentCount} agents · Knowledge · 3D · Tasks · build infra-doc`
                 : `Agents' Office · ${agentCount} agents · ${plan.departments.length} departments`
-              : 'Kyaani AI Infra Doc'}
+              : 'Virtual Office'}
           </span>
         </div>
         {plan && (
@@ -219,7 +219,7 @@ export default function App() {
       {note && !err && <p className="vo-alert vo-alert--ok">{note}</p>}
       {qwenReady === false && !err && (
         <p className="vo-alert vo-alert--warn">
-          Qwen offline — set <code>KYAANI_CHAT_URL</code> (default 127.0.0.1:8790) and run your chat tunnel.
+          Qwen offline — set <code>PLAN_CHAT_URL</code> (default 127.0.0.1:8790) and run your chat tunnel.
         </p>
       )}
 

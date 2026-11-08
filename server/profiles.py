@@ -105,9 +105,9 @@ def sync_office_roster_from_plan(plan: dict[str, Any]) -> dict[str, Any]:
         "remote": (
             f"lab {_lab_host()}: +{len(created_remote)} ~{len(existing_remote)} -{len(removed_remote)}"
             if _lab_host()
-            else "skipped (KYAANI_LAB_HOST unset)"
+            else "skipped (LAB_SSH_HOST unset)"
         ),
-        "botsRoster": "call POST :9122/kyaani-bots-proxy-refresh after Hermes uses gateway front 9122",
+        "botsRoster": "call POST :9122/gateway-bots-proxy-refresh after Hermes uses gateway front 9122",
         "removed": removed,
         "removedRemote": removed_remote,
         "failed": failed[:12],
@@ -123,11 +123,11 @@ def _hermes_bin() -> str:
 
 
 def _lab_host() -> str:
-    return os.environ.get("KYAANI_LAB_HOST", "").strip()
+    return os.environ.get("LAB_SSH_HOST", "").strip()
 
 
 def _remote_home() -> str:
-    return os.environ.get("KYAANI_HERMES_REMOTE_HOME", "").strip()
+    return os.environ.get("HERMES_REMOTE_HOME", "").strip()
 
 
 def _list_local_profiles() -> list[str]:
@@ -197,7 +197,7 @@ def _ensure_one_profile(
 
 
 def _sync_local_model_from_template(profile: str) -> None:
-    template = os.environ.get("KYAANI_OFFICE_PROFILE_TEMPLATE", "office-sarah").strip()
+    template = os.environ.get("OFFICE_PROFILE_TEMPLATE", "office-sarah").strip()
     tmpl_dir = _hermes_home() / "profiles" / template
     dest = _hermes_home() / "profiles" / profile
     if not tmpl_dir.is_dir() or not dest.is_dir():
@@ -292,8 +292,8 @@ def _sync_remote_model_access(profile: str) -> None:
     if not _lab_host():
         return
     home = _remote_home() or "~/.hermes"
-    fallback_base = os.environ.get("KYAANI_GATEWAY_MODEL_BASE_URL", "http://10.80.0.1:18083/v1")
-    fallback_model = os.environ.get("KYAANI_GATEWAY_MODEL_DEFAULT", "vllm/company-ai-auto")
+    fallback_base = os.environ.get("GATEWAY_MODEL_BASE_URL", "http://10.80.0.1:18083/v1")
+    fallback_model = os.environ.get("GATEWAY_MODEL_DEFAULT", "vllm/company-ai-auto")
     q_home = home.replace("'", "'\\''")
     q_prof = profile.replace("'", "'\\''")
     q_base = fallback_base.replace("'", "'\\''")
@@ -330,8 +330,8 @@ def _sync_remote_ui_meta(plan: dict[str, Any], failed: list[dict[str, str]]) -> 
     q_home = home.replace("'", "'\\''")
     inner = (
         f"H='{q_home}'; export HERMES_HOME=\"$H\"; "
-        f"echo '{script_b64}' | base64 -d > /tmp/kyaani-sync-bots-ui-meta.py; "
-        f"echo '{payload_b64}' | base64 -d | python3 /tmp/kyaani-sync-bots-ui-meta.py"
+        f"echo '{script_b64}' | base64 -d > /tmp/office-sync-bots-ui-meta.py; "
+        f"echo '{payload_b64}' | base64 -d | python3 /tmp/office-sync-bots-ui-meta.py"
     )
     proc = _ssh_lab(inner, timeout=180)
     if proc.returncode != 0:
@@ -349,8 +349,8 @@ def _notify_hermes_bots_refresh() -> None:
     import urllib.request
 
     for url in (
-        "http://127.0.0.1:9122/kyaani-bots-proxy-refresh",
-        "http://127.0.0.1:9120/kyaani-bots-proxy-refresh",
+        "http://127.0.0.1:9122/gateway-bots-proxy-refresh",
+        "http://127.0.0.1:9120/gateway-bots-proxy-refresh",
     ):
         try:
             req = urllib.request.Request(url, method="POST", data=b"")

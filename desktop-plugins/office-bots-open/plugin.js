@@ -1,8 +1,8 @@
 /**
- * Kyaani plan agents in Hermes BOTS (Desktop):
+ * Plan agents in Hermes BOTS (Desktop):
  * - Normal click → Hermes opens Bot Chat (office-<id>) — do NOT intercept.
  * - Option (⌥) / Alt click → Virtual Office 3D + Tasks for that agent.
- * - Office iframe postMessage `kyaani-office-open-bot-chat` → BOTS + Bot Chat.
+ * - Office iframe postMessage `office-open-bot-chat` → BOTS + Bot Chat.
  */
 import React, { useEffect } from 'react'
 import { host, STATUSBAR_AREAS } from '@hermes/plugin-sdk'
@@ -28,7 +28,7 @@ let lastPlanUpdatedAt = ''
 
 async function refreshOfficePlan() {
   try {
-    const res = await fetch(`${OFFICE_BASE}/api/kyaani/office/bots`, { cache: 'no-store' })
+    const res = await fetch(`${OFFICE_BASE}/api/office/bots`, { cache: 'no-store' })
     if (!res.ok) return
     const body = await res.json()
     officeIds = new Set((body.bots || []).map((b) => String(b.id || '').trim()).filter(Boolean))
@@ -38,8 +38,8 @@ async function refreshOfficePlan() {
     const updatedAt = String(body.updatedAt || '')
     if (updatedAt && updatedAt !== lastPlanUpdatedAt) {
       lastPlanUpdatedAt = updatedAt
-      fetch('http://127.0.0.1:9122/kyaani-bots-proxy-refresh', { method: 'POST' }).catch(() => {})
-      fetch(`${OFFICE_BASE}/api/kyaani/office/ensure-profiles`, { method: 'POST' }).catch(() => {})
+      fetch('http://127.0.0.1:9122/gateway-bots-proxy-refresh', { method: 'POST' }).catch(() => {})
+      fetch(`${OFFICE_BASE}/api/office/ensure-profiles`, { method: 'POST' }).catch(() => {})
       if (typeof host?.invalidateQueries === 'function') {
         host.invalidateQueries(['roster'])
       }
@@ -124,7 +124,7 @@ function diskProfileName(id) {
 
 function officeIframe() {
   return (
-    document.querySelector('iframe[title="Kyaani Office"]') ||
+    document.querySelector('iframe[title="Virtual Office"]') ||
     document.querySelector('iframe[src*="127.0.0.1:3001"]') ||
     document.querySelector('iframe[src*="localhost:3001"]')
   )
@@ -190,7 +190,7 @@ function openBotChatFromOffice(agentId, profileName) {
 function focusOfficeAgent(id) {
   if (!id) return
   const url = `${OFFICE_BASE}/?embed=hermes&agent=${encodeURIComponent(id)}`
-  host.navigate('/kyaani')
+  host.navigate('/office')
   const apply = () => {
     const frame = officeIframe()
     if (!frame) return false
@@ -198,7 +198,7 @@ function focusOfficeAgent(id) {
       if (!String(frame.src || '').includes(`agent=${encodeURIComponent(id)}`)) {
         frame.src = url
       }
-      frame.contentWindow?.postMessage({ type: 'kyaani-office-focus-agent', id }, '*')
+      frame.contentWindow?.postMessage({ type: 'office-focus-agent', id }, '*')
     } catch {
       frame.src = url
     }
@@ -219,16 +219,16 @@ function OfficeBotClickGuard() {
     mo.observe(document.body, { childList: true, subtree: true })
     const onOfficePlanMessage = (ev) => {
       const data = ev?.data
-      if (!data || data.type !== 'kyaani:office-plan-updated') return
+      if (!data || data.type !== 'office-plan-updated') return
       void refreshOfficePlan()
-      fetch('http://127.0.0.1:9122/kyaani-bots-proxy-refresh', { method: 'POST' }).catch(() => {})
+      fetch('http://127.0.0.1:9122/gateway-bots-proxy-refresh', { method: 'POST' }).catch(() => {})
       if (typeof host?.invalidateQueries === 'function') {
         host.invalidateQueries(['roster'])
       }
     }
     const onOpenBotChatMessage = (ev) => {
       const data = ev?.data
-      if (!data || data.type !== 'kyaani-office-open-bot-chat') return
+      if (!data || data.type !== 'office-open-bot-chat') return
       try {
         if (ev.origin && ev.origin !== OFFICE_BASE) return
       } catch {
@@ -271,11 +271,11 @@ function OfficeBotClickGuard() {
 }
 
 export default {
-  id: 'kyaani-office-bots-open',
-  name: 'Kyaani Office bot opens',
+  id: 'office-bots-open',
+  name: 'Virtual Office bot opens',
   defaultEnabled: true,
   register(ctx) {
-    console.info('[kyaani] BOTS: normal click = Bot Chat · Option+click = Virtual Office 3D')
+    console.info('[gateway-proxy] BOTS: normal click = Bot Chat · Option+click = Virtual Office 3D')
     ctx.registerMany([
       {
         id: 'guard',

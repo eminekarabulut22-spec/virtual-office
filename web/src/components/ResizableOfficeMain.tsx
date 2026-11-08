@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 
-const STORAGE_KEY = 'kyaani-vo-panel-widths-v1'
+const STORAGE_KEY = 'vo-panel-widths-v1'
 
 const LIMITS = {
   left: { min: 160, max: 420, default: 220, embedDefault: 240 },

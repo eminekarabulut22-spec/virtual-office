@@ -17,25 +17,25 @@ async function parse<T>(res: Response): Promise<{ ok: boolean; data?: T; error?:
 
 export async function fetchPlan() {
   return parse<{ plan: CompanyOffice | null; kpiByAgentId?: Record<string, AgentUsage> }>(
-    await fetch('/api/kyaani/office', { cache: 'no-store' }),
+    await fetch('/api/office', { cache: 'no-store' }),
   )
 }
 
 export async function fetchKpi() {
   return parse<{ kpiByAgentId: Record<string, AgentUsage> }>(
-    await fetch('/api/kyaani/office/kpi', { cache: 'no-store' }),
+    await fetch('/api/office/kpi', { cache: 'no-store' }),
   )
 }
 
 export async function fetchPlanWriter() {
   return parse<{ ok: boolean; endpoint?: string }>(
-    await fetch('/api/kyaani/office/plan-writer', { cache: 'no-store' }),
+    await fetch('/api/office/plan-writer', { cache: 'no-store' }),
   )
 }
 
 export async function fetchUsage() {
   return parse<{ usage: { byAgentId: Record<string, AgentUsage>; companyTokens: number } }>(
-    await fetch('/api/kyaani/office/usage?chat=0', { cache: 'no-store' }),
+    await fetch('/api/office/usage?chat=0', { cache: 'no-store' }),
   )
 }
 
@@ -44,7 +44,7 @@ export async function runOfficeUpdate(
   onProgress?: (label: string) => void,
 ): Promise<{ ok: boolean; plan?: CompanyOffice; error?: string }> {
   const start = await parse<{ jobId: string }>(
-    await fetch('/api/kyaani/office/update-job', {
+    await fetch('/api/office/update-job', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt }),
@@ -62,7 +62,7 @@ export async function runOfficeUpdate(
       phase?: string
       plan?: CompanyOffice
       error?: string
-    }>(await fetch(`/api/kyaani/office/update-job?id=${encodeURIComponent(jobId)}`, { cache: 'no-store' }))
+    }>(await fetch(`/api/office/update-job?id=${encodeURIComponent(jobId)}`, { cache: 'no-store' }))
     if (!poll.ok) return { ok: false, error: poll.error }
     if (poll.data?.status === 'running') {
       const phase = poll.data.phase
@@ -82,7 +82,7 @@ export async function runOfficeUpdate(
 
 export async function sendAgentChat(agentId: string, messages: { role: string; content: string }[]) {
   return parse<{ reply: string; tokensEstimated?: number }>(
-    await fetch('/api/kyaani/chat', {
+    await fetch('/api/office/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ agentId, messages }),

@@ -1,4 +1,4 @@
-"""Plan writer — HTTP to KYAANI_CHAT_URL (Qwen via lab tunnel)."""
+"""Plan writer — HTTP to PLAN_CHAT_URL (Qwen via lab tunnel)."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from plan import (
 
 
 def chat_url() -> str:
-    return os.environ.get("KYAANI_CHAT_URL", "http://127.0.0.1:8790/v1/chat").rstrip("/")
+    return os.environ.get("PLAN_CHAT_URL", "http://127.0.0.1:8790/v1/chat").rstrip("/")
 
 
 def host_label() -> str:
@@ -86,7 +86,7 @@ def ask_qwen_chat(
         chat_url(),
         data=payload,
         method="POST",
-        headers={"Content-Type": "application/json", "X-Kyaani-Client": "web"},
+        headers={"Content-Type": "application/json", "X-Office-Client": "web"},
     )
     try:
         with urllib.request.urlopen(req, timeout=timeout) as res:
@@ -96,7 +96,7 @@ def ask_qwen_chat(
             return None, "Qwen is busy. Try again in a moment."
         return None, f"Qwen HTTP {e.code}."
     except Exception:
-        return None, f"Could not reach Qwen at {host_label()}. Start KYAANI_CHAT_URL tunnel (desk:up)."
+        return None, f"Could not reach Qwen at {host_label()}. Start PLAN_CHAT_URL tunnel (desk:up)."
     if not text.strip():
         return None, "Qwen returned an empty reply."
     return text, None
@@ -106,12 +106,12 @@ def ask_qwen(instruction: str, timeout: float = 170.0) -> tuple[str | None, str 
     payload = json.dumps(
         {"messages": [{"role": "user", "content": instruction}], "locale": "en"}
     ).encode("utf-8")
-    # Lab chat-gateway (8790) accepts only user/assistant and X-Kyaani-Client: web.
+    # Lab chat-gateway (8790) accepts only user/assistant and X-Office-Client: web.
     req = urllib.request.Request(
         chat_url(),
         data=payload,
         method="POST",
-        headers={"Content-Type": "application/json", "X-Kyaani-Client": "web"},
+        headers={"Content-Type": "application/json", "X-Office-Client": "web"},
     )
     try:
         with urllib.request.urlopen(req, timeout=timeout) as res:
@@ -126,7 +126,7 @@ def ask_qwen(instruction: str, timeout: float = 170.0) -> tuple[str | None, str 
             )
         return None, f"Qwen HTTP {e.code}."
     except Exception:
-        return None, f"Could not reach Qwen at {host_label()}. Start KYAANI_CHAT_URL tunnel (desk:up)."
+        return None, f"Could not reach Qwen at {host_label()}. Start PLAN_CHAT_URL tunnel (desk:up)."
     if not text.strip():
         return None, "Qwen returned an empty reply."
     return text, None

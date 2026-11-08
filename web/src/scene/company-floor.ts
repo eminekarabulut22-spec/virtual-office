@@ -1,4 +1,4 @@
-// @ts-nocheck — Three.js scene port for Kyaani_AI_Infra_Doc virtual-office.
+// @ts-nocheck — Three.js scene port for virtual-office virtual-office.
 /**
  * A floor built from a company plan.
  *
@@ -40,7 +40,7 @@ function preloadBrainHeroImage() {
 
 function officeAssetOrigin(): string {
   if (typeof document !== 'undefined') {
-    const meta = document.querySelector('meta[name="kyaani-office-origin"]')?.getAttribute('content')?.trim()
+    const meta = document.querySelector('meta[name="office-origin"]')?.getAttribute('content')?.trim()
     if (meta?.startsWith('http')) return meta.replace(/\/+$/, '')
   }
   if (typeof window !== 'undefined') {

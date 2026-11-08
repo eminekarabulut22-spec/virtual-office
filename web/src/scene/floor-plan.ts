@@ -1,4 +1,4 @@
-/** 3D floor layout — Kyaani AI Infra Doc (radial ring + brain hub). */
+/** 3D floor layout — Virtual Office (radial ring + brain hub). */
 
 import type { CompanyAgent, CompanyDepartment, CompanyOffice, WorkStatus } from '../types'
 

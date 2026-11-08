@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Virtual Office — UI + API from Kyaani_AI_Infra_Doc (Hermes iframe → :3001)."""
+"""Virtual Office — UI + API from virtual-office (Hermes iframe → :3001)."""
 
 from __future__ import annotations
 
@@ -24,8 +24,8 @@ from store import read_jobs, read_plan, write_jobs, write_plan
 
 ROOT = Path(__file__).resolve().parent.parent
 STATIC_DIR = ROOT / "web" / "dist"
-BUILD_ID = "kyaani-ai-infra-doc"
-PORT = int(os.environ.get("KYAANI_OFFICE_PORT", "3001"))
+BUILD_ID = "virtual-office"
+PORT = int(os.environ.get("OFFICE_PORT", "3001"))
 
 CORS = {
     "Access-Control-Allow-Origin": "*",
@@ -34,7 +34,7 @@ CORS = {
     "Access-Control-Max-Age": "86400",
 }
 FRAME = {"Content-Security-Policy": "frame-ancestors * http: https: app: file:"}
-BUILD_HEADER = {"X-Kyaani-Office-Build": BUILD_ID, "X-Kyaani-Office-Repo": "Kyaani_AI_Infra_Doc"}
+BUILD_HEADER = {"X-Office-Build": BUILD_ID, "X-Office-Repo": "virtual-office"}
 
 
 def kpi_by_agent_id(plan: dict[str, Any] | None) -> dict[str, Any]:
@@ -227,15 +227,15 @@ class Handler(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         qs = parse_qs(urlparse(self.path).query)
 
-        if path == "/api/kyaani/office/health":
+        if path == "/api/office/health":
             json_response(
                 self,
                 200,
-                {"ok": True, "build": BUILD_ID, "repo": "Kyaani_AI_Infra_Doc", "port": PORT},
+                {"ok": True, "build": BUILD_ID, "repo": "virtual-office", "port": PORT},
             )
             return
 
-        if path == "/api/kyaani/office":
+        if path == "/api/office":
             plan = read_plan()
             live = apply_kanban_live_overlay(plan) if plan else None
             json_response(
@@ -250,24 +250,24 @@ class Handler(BaseHTTPRequestHandler):
             )
             return
 
-        if path == "/api/kyaani/office/kpi":
+        if path == "/api/office/kpi":
             plan = read_plan()
             json_response(self, 200, {"kpiByAgentId": kpi_by_agent_id(plan)})
             return
 
-        if path == "/api/kyaani/office/plan-writer":
+        if path == "/api/office/plan-writer":
             ok, endpoint = plan_writer_reachable()
             json_response(self, 200, {"ok": ok, "endpoint": endpoint})
             return
 
-        if path == "/api/kyaani/office/inference":
+        if path == "/api/office/inference":
             json_response(
                 self,
                 200,
                 {
                     "modelId": "openai/vllm/company-ai-local",
                     "displayName": "Company Qwen",
-                    "note": "Kyaani AI Infra Doc virtual-office",
+                    "note": "Virtual Office virtual-office",
                     "parameterLabel": "vllm/company-ai-local",
                     "vramSource": "configured",
                     "estimatedVramMb": None,
@@ -277,7 +277,7 @@ class Handler(BaseHTTPRequestHandler):
             )
             return
 
-        if path == "/api/kyaani/office/bots":
+        if path == "/api/office/bots":
             plan = read_plan()
             if not plan:
                 json_response(
@@ -300,7 +300,7 @@ class Handler(BaseHTTPRequestHandler):
             )
             return
 
-        if path == "/api/kyaani/office/update-job":
+        if path == "/api/office/update-job":
             job_id = (qs.get("id") or [""])[0]
             job = read_jobs().get(job_id)
             if not job:
@@ -309,7 +309,7 @@ class Handler(BaseHTTPRequestHandler):
             json_response(self, 200, job)
             return
 
-        if path == "/api/kyaani/office/usage":
+        if path == "/api/office/usage":
             plan = read_plan()
             include_chat = (qs.get("chat") or ["0"])[0].lower() in ("1", "true", "yes")
             by_agent = usage_by_agent_id(plan, include_chat=include_chat) if plan else {}
@@ -332,7 +332,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         path = urlparse(self.path).path
 
-        if path == "/api/kyaani/office/live-sync":
+        if path == "/api/office/live-sync":
             plan = read_plan()
             if not plan:
                 json_response(self, 404, {"error": {"message": "No office plan yet."}})
@@ -345,7 +345,7 @@ class Handler(BaseHTTPRequestHandler):
             )
             return
 
-        if path == "/api/kyaani/office/update-job":
+        if path == "/api/office/update-job":
             body = read_body(self) or {}
             prompt = str(body.get("prompt") or "").strip()
             if not prompt:
@@ -366,7 +366,7 @@ class Handler(BaseHTTPRequestHandler):
             json_response(self, 200, {"jobId": job_id})
             return
 
-        if path == "/api/kyaani/office/ensure-profiles":
+        if path == "/api/office/ensure-profiles":
             plan = read_plan()
             if not plan:
                 json_response(self, 400, {"error": "No plan on disk."})
@@ -374,7 +374,7 @@ class Handler(BaseHTTPRequestHandler):
             json_response(self, 200, sync_profiles_from_plan(plan))
             return
 
-        if path == "/api/kyaani/chat":
+        if path == "/api/office/chat":
             json_response(
                 self,
                 410,
@@ -392,7 +392,7 @@ def main() -> None:
     if not STATIC_DIR.is_dir():
         print(f"WARN: {STATIC_DIR} missing — run: npm run build", flush=True)
     server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    print(f"Kyaani Virtual Office ({BUILD_ID}) http://127.0.0.1:{PORT}", flush=True)
+    print(f"Virtual Office ({BUILD_ID}) http://127.0.0.1:{PORT}", flush=True)
     server.serve_forever()
 
 
